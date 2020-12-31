@@ -6,35 +6,9 @@
 //
 
 import UIKit
-import AVFoundation
 import RxSwift
 import RxCocoa
-
-enum EggTime:Int {
-    
-    case none = 1
-    case soft = 2
-    case medium = 4
-    case hard = 7
-    
-    var title:String {
-        get{
-            switch self {
-            case .none:     return "How do you like your eggs?"
-            case .soft:     return "Soft"
-            case .medium:   return "Medium"
-            case .hard:     return "Hard"
-            }
-        }
-    }
-    
-    var totalSeconds:Int {
-        get{
-            return self.rawValue * 60
-        }
-    }
-    
-}
+import AVFoundation
 
 class MainViewController: UIViewController {
     
@@ -46,10 +20,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var remainingLabel: UILabel!
     @IBOutlet weak var resetButton: UIButton!
     
+    var viewModel = MainViewModel()
     var timer = Timer()
     var player:AVAudioPlayer!
-    var secondsRemaining = BehaviorRelay<Int>(value: 1)
-    var totalTime:Int = 1
     
     private let bag = DisposeBag()
     
@@ -58,45 +31,42 @@ class MainViewController: UIViewController {
         self.resetButton.isHidden = true
         self.remainingLabel.isHidden = true
         
-        self.secondsRemaining.map({ Float($0) / Float(self.totalTime) }).bind(to: self.progressBar.rx.progress).disposed(by: self.bag)
-        self.secondsRemaining.map({ String($0) + "s" }).bind(to: self.remainingLabel.rx.text).disposed(by: self.bag)
+        self.viewModel.progress.bind(to: self.progressBar.rx.progress).disposed(by: self.bag)
+        self.viewModel.secondsRemaining.map({ String($0) + "s" }).bind(to: self.remainingLabel.rx.text).disposed(by: self.bag)
         
         self.softEggButton.rx.tap.bind {
-            self.setTimer(time: .soft)
+            self.setTimer(eggTime: .soft)
         }.disposed(by: self.bag)
         
         self.mediumEggButton.rx.tap.bind {
-            self.setTimer(time: .medium)
+            self.setTimer(eggTime: .medium)
         }.disposed(by: self.bag)
         
         self.hardEggButton.rx.tap.bind {
-            self.setTimer(time: .hard)
+            self.setTimer(eggTime: .hard)
         }.disposed(by: self.bag)
         
         self.resetButton.rx.tap.bind {
-            self.setTimer(time: .none)
+            self.setTimer(eggTime: .none)
         }.disposed(by: self.bag)
     }
     
-    func setTimer(time:EggTime) {
+    func setTimer(eggTime:EggTime) {
+        self.titleLabel.text = eggTime.title
+        self.resetButton.isHidden = eggTime == .none
+        self.remainingLabel.isHidden = eggTime == .none
         self.timer.invalidate()
-        self.titleLabel.text = time.title
-        self.totalTime = time.totalSeconds
-        self.secondsRemaining.accept(time.totalSeconds)
-        self.resetButton.isHidden = time == .none
-        self.remainingLabel.isHidden = time == .none
-        if time != .none {
+        if eggTime != .none {
+            self.viewModel.setTimer(eggTime: eggTime)
             self.timer = Timer.scheduledTimer(timeInterval: 1.0, target:self, selector: #selector(updateTimer), userInfo:nil, repeats: true)
+        }else{
+            self.viewModel.reset()
         }
     }
     
     @objc func updateTimer() {
-        var current = self.secondsRemaining.value
-        current -= 1
-        if current > 0 {
-            self.secondsRemaining.accept(current)
-        }else{
-            self.secondsRemaining.accept(0)
+        let isValid = self.viewModel.updateTimer()
+        if !isValid {
             self.timer.invalidate()
             self.titleLabel.text = "DONE!"
             self.playSound()
@@ -104,8 +74,7 @@ class MainViewController: UIViewController {
     }
     
     func playSound() {
-        guard let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3") else { return }
-        do{
+        if let url = self.viewModel.getSoundUrl() {
             self.player = try? AVAudioPlayer(contentsOf: url)
             self.player.play()
         }

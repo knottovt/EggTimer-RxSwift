@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A044C6F259DD75200067C41 /* alarm_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1A044C6E259DD75200067C41 /* alarm_sound.mp3 */; };
+		1A044CB6259E345500067C41 /* EggTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A044CB5259E345500067C41 /* EggTime.swift */; };
+		1A044CB9259E348900067C41 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A044CB8259E348900067C41 /* MainViewModel.swift */; };
 		1AB63F04259DD31E0061D533 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB63F03259DD31E0061D533 /* AppDelegate.swift */; };
 		1AB63F08259DD31E0061D533 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB63F07259DD31E0061D533 /* MainViewController.swift */; };
 		1AB63F0B259DD31E0061D533 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB63F09259DD31E0061D533 /* Main.storyboard */; };
@@ -19,6 +21,8 @@
 /* Begin PBXFileReference section */
 		12BB928F9D8EF4F533825653 /* Pods_EggTimer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EggTimer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A044C6E259DD75200067C41 /* alarm_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_sound.mp3; sourceTree = "<group>"; };
+		1A044CB5259E345500067C41 /* EggTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EggTime.swift; sourceTree = "<group>"; };
+		1A044CB8259E348900067C41 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		1AB63F00259DD31E0061D533 /* EggTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EggTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB63F03259DD31E0061D533 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AB63F07259DD31E0061D533 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +69,8 @@
 			children = (
 				1AB63F03259DD31E0061D533 /* AppDelegate.swift */,
 				1AB63F07259DD31E0061D533 /* MainViewController.swift */,
+				1A044CB8259E348900067C41 /* MainViewModel.swift */,
+				1A044CB5259E345500067C41 /* EggTime.swift */,
 				1AB63F09259DD31E0061D533 /* Main.storyboard */,
 				1AB63F0C259DD3220061D533 /* Assets.xcassets */,
 				1AB63F0E259DD3220061D533 /* LaunchScreen.storyboard */,
@@ -207,7 +213,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AB63F08259DD31E0061D533 /* MainViewController.swift in Sources */,
+				1A044CB6259E345500067C41 /* EggTime.swift in Sources */,
 				1AB63F04259DD31E0061D533 /* AppDelegate.swift in Sources */,
+				1A044CB9259E348900067C41 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
